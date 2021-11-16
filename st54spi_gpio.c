@@ -70,8 +70,8 @@ long st54spi_gpio_dev_ioctl(struct file *pfile, unsigned int cmd, unsigned long 
 		if ((arg == 0) || (arg == 1)) {
 			gpio_set_value(st54spi_gpio_dev->gpiod_reset, arg);
 		} else {
-		pr_err("%s bad arg %lu\n", __func__, arg);
-		ret = -ENOIOCTLCMD;
+			pr_err("%s bad arg %lu\n", __func__, arg);
+			ret = -ENOIOCTLCMD;
 		}
 		break;
 	default:
@@ -117,6 +117,7 @@ static const struct file_operations st54spi_gpio_dev_fops = {
 	.unlocked_ioctl = st54spi_gpio_dev_ioctl,
 };
 
+/* This function will be called to probe the character device*/
 static int st54spi_gpio_probe(struct platform_device *pdev)
 {
 	int rc;
@@ -205,6 +206,7 @@ fail_class_create:
 	return rc;
 }
 
+/* This function will be called to remove the character device*/
 static int st54spi_gpio_remove(struct platform_device *pdev)
 {
 	struct st54spi_gpio_device *st54spi_gpio_dev;
