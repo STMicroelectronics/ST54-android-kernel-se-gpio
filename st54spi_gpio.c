@@ -30,6 +30,7 @@
 #include <linux/uaccess.h>
 #include <linux/cdev.h>
 #include <linux/types.h>
+#include <linux/delay.h>
 
 /* Flag ESE_CONF_GPIO_OPEN_RELEASE is to configure nRESET GPIO in
    open function and freeing GPIO in release function */
@@ -78,6 +79,9 @@ long st54spi_gpio_dev_ioctl(struct file *pfile, unsigned int cmd, unsigned long 
 	case ST54SPI_SET_GPIO:
 		if ((arg == 0) || (arg == 1)) {
 			gpio_set_value(st54spi_gpio_dev->gpiod_reset, arg);
+			if (arg == 0) {
+				msleep(3);
+				}
 		} else {
 			pr_err("%s bad arg %lu\n", __func__, arg);
 			ret = -ENOIOCTLCMD;
